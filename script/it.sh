@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# Run the docker container.
-# Starts at interactive bash terminal.
+# Run an interactive shell in the docker container.
 
-
-PROJ="rust_req"
-PROJ_DIR="/Users/chris/${PROJ}"
+PROJ="treddit"
+PROJ_DIR="$HOME/$PROJ"
 CONT_NAME="${PROJ}_cont"
 
 echo "Running ${PROJ} container ... "
+set -o xtrace
 
 docker run \
   --rm \

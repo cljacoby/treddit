@@ -1,14 +1,12 @@
 #!/bin/bash
 
-# Run the docker container.
-# Runs `cargo run` and exits.
+# Run the docker container with `cargo run` as entry.
 
+PROJ="treddit"
+PROJ_DIR="$HOME/$PROJ"
+CONT_NAME="$PROJ_cont"
 
-PROJ="rust_req"
-PROJ_DIR="/Users/chris/${PROJ}"
-CONT_NAME="${PROJ}_cont"
-
-echo "Running ${PROJ} container ... "
+echo "Running $PROJ container ... "
 
 docker run \
   --rm \

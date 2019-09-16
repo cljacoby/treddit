@@ -2,10 +2,11 @@
 
 # Build the docker image
 
-PROJ="rust_req"
-PROJ_DIR="/Users/chris/${PROJ}"
+PROJ="treddit"
+PROJ_DIR="$HOME/$PROJ"
 
 echo "Building the ${PROJ} image ... "
+set -o xtrace
 
 docker build \
   -t ${PROJ} \

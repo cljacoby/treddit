@@ -8,6 +8,7 @@ use crate::t3::T3;
 use crate::more::More;
 
 
+// TODO: Make the members private
 #[derive(Debug)]
 #[derive(Serialize, Deserialize)]
 pub struct Listing {
@@ -23,15 +24,23 @@ impl Listing {
     /// An empty Listing node. Replaces `replies` nodes equal to emptry strings
     pub fn empty() -> Listing {
         Listing {
-            modhash: "".to_string(),
+            modhash: String::from(""),
             dist: None,
             children: Vec::<RNode>::new(),
             after: None,
             before: None,
         }
     }
+    
+    pub fn iter(&self) -> &Vec<RNode> {
+        &self.children
+    }
 
-    // NOTE: This seems like a kludge
+    // Problem with direct iter is that the childern vector is RNodes.
+    // This means the calling level needs to have the match logic
+
+    /*
+
     pub fn extract_t1s(&self) -> Vec<&T1> {
         let mut t1s = Vec::new();
         for child in self.children.iter() {
@@ -42,11 +51,7 @@ impl Listing {
         }
         t1s
     }
-
-    pub fn iter_only<T>() -> Vec::<T> {
-        let v: Vec<T> = Vec::new();
-        v
-    }
+    */
 
 }
 

@@ -4,9 +4,9 @@ use std::path::Path;
 
 mod common;
 
-use treddit::read_file;
 use common::SUBMISSION_PATH;
-use treddit::rdata::{RNode, Listing};
+use treddit::rnode::{RNode};
+use treddit::listing::Listing;
 
 #[test]
 fn test() -> Result<(), Box<std::error::Error>> {
@@ -32,9 +32,16 @@ fn test() -> Result<(), Box<std::error::Error>> {
         }
     };
 
-    for t1 in listing.extract_t1s().iter() {
-        t1.walk();
+    for rnode in listing.iter() {
+        match rnode {
+            RNode::T1(t1) => {
+                t1.walk()
+            },
+            _ => {},
+        } 
+    
     }
+    
 
     Ok(())
 }

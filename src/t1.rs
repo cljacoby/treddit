@@ -5,6 +5,7 @@ use std::fmt::{self, Formatter, Display};
 use serde::{Serialize, Deserialize};
 use serde_json::{Value, Map};
 
+use crate::rnode::RNode;
 use crate::listing::{Listing, deserialize_replies};
 
 
@@ -84,10 +85,19 @@ impl T1 {
     // TODO: Make this yield references to instances
     fn _walk(&self, depth: u32) {
         println!("{}", self);
-        for t1 in self.replies.extract_t1s().iter() {
-            t1._walk(depth + 1);
+
+        for rnode in (*self.replies).iter() {
+            match rnode {
+                RNode::T1(t1) => {
+                    println!("t1: {:?}", t1);
+                    t1._walk(depth + 1);
+                },
+                RNode::More(more) => { println!("more: {:?}", more); },
+                _ => { println!("t3 or listing, expecting t1 or more") },
+            } 
         }
     }
+
 
 }
 

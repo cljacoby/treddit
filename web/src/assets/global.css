@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --gbl-clr-grey: #616155;
+    --gbl-clr-purple: #6200ee;
+    --gbl-clr-purple-darker: #5701d2;
+    --gbl-clr-purple-darkest: #4e02b9;
+}
+

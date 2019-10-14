@@ -13,6 +13,7 @@
 <script>
 import Vue from 'vue'
 import Submission from './Submission.vue';
+import axios from "axios";
 
 export default {
     name: "Submissions",
@@ -33,8 +34,17 @@ export default {
     },
     methods: {
         addRow: function(event) {
+            this.test();
             this.submissions.push(this.submissionsCount);
-        }
+        },
+        test: function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://rest.learncode.academy/api/vue-5/friends");
+            xhr.onreadystatechange = function(arg) {
+                console.log(arg);
+            }
+            xhr.send();
+        },
     }
 }
 </script>

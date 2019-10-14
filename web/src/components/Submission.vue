@@ -20,7 +20,11 @@ export default {
         }
     },
     methods: {
-
+        test: async function() {
+            let resp = await fetch("http://www.google.com");
+            let myJson = await response.json();
+            console.log(JSON.stringify(myJson));
+        },
     }
 }
 </script>

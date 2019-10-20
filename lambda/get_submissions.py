@@ -1,18 +1,20 @@
 import json
 import boto3
 import botocore
+import time
+import os
 
 BUCKET_NAME = "treddit"
-KEY = "file.txt"
+KEY = "submissions.json"
+TMP_FILE = '/tmp/submissions.json'
 
 s3 = boto3.resource('s3')
 
 def lambda_handler(event, context):
-    s3.Bucket(BUCKET_NAME)
-    return {
-        "boto3": "test",
-        'statusCode': 200,
-        'event': json.dumps(event),
-        'body': json.dumps('Hello from Lambda!')
-    }
+    start = time.time()
+    bucket = s3.Bucket(BUCKET_NAME)
+    bucket.download_file(KEY, TMP_FILE)
+    with open(TMP_FILE) as f:
+        d = json.load(f)
+    return d
 

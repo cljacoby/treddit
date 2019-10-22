@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 
-import sys
-import os
-import argparse
-import subprocess
-import zipfile
-import logging
-from types import SimpleNamespace
-from datetime import datetime
-
 """
 Limitations:
     * Can only update code to existing functions
     * Cannot create new functions
     * Does not provide means to edit lambda configuration settings (i.e function handler name)
     * Will not work for project structures bundled in to the lambda zip
+    * Creates build artifacts. Would be nice to use Docker to avoid this
+
+Plan to fix mult-file limitation:
+    * Create separate module to handle building the zip
+    * Arguments:
+        * zip-location
+        * source files/directories
+    * How to handle file paths in the build zip? These need to resolve for importing
 """
 
 # TODO: Test what happens when zipfile executes zip to existing path. Does the zip just get updated?
@@ -23,60 +22,22 @@ Limitations:
 # TODO: Write tests
 
 
+
+# *****************************************************************************
+# *****************************************************************************
+# *****************************************************************************
+
+
+import sys
+import os
+import argparse
+import subprocess
+import zipfile
+import logging
+import util
+
+
 BUILD_DIR = "./build"
-
-
-def err(msg):
-    """
-    : Add basic boilerplate around error message.
-    """
-    return f"Error: {msg}. See `--help` for more information."
-
-
-def init_logger(log_level="DEBUG", stream=sys.stdout):
-    """
-    : Init the logger.
-    """
-    log_level_int = getattr(logging, log_level, None)
-    if log_level_int == None:
-        logging.warn(
-            "Obtained unrecognized log_level`{log_level}`. Reverting to 'INFO'"
-        )
-        log_level_int = getattr(logging, "INFO")
-    log = logging.getLogger()
-    log.setLevel(log_level_int)
-    handler = logging.StreamHandler(stream)
-    handler.setLevel(log_level)
-    log.addHandler(handler)
-    return log
-
-
-def get_file_info(path):
-    """
-    : Get basic file information from a file path.
-    """
-    source = path
-    exists = os.path.exists(path)
-    isfile = os.path.isfile(path)
-    isdir = os.path.isdir(path)
-    abspath = os.path.abspath(path)
-    root, leaf = os.path.split(abspath)
-    leaf_name = leaf
-    extension = None
-    if isfile:
-        leaf_name, extension = os.path.splitext(leaf)
-    obj = SimpleNamespace(
-        source=source,
-        exists=exists,
-        isfile=isfile,
-        isdir=isdir,
-        abspath=abspath,
-        root=root,
-        leaf=leaf,
-        leaf_name=leaf_name,
-        extension=extension,
-    )
-    return obj
 
 
 def get_args():
@@ -113,20 +74,20 @@ def main():
     args = get_args()
 
     # setup logging
-    log = init_logger(args.log_level)
+    log = util.init_logger(args.log_level)
 
     # Get module file info
     log.debug(f"Command Line Args: {args}")
-    file_info = get_file_info(args.module)
+    file_info = util.get_file_info(args.module)
     log.debug(f"Module info: {file_info}")
 
     # validate module
     if not file_info.exists:
-        sys.exit(err(f"Python module argument `{args.module}` does not exist"))
+        sys.exit(util.err(f"Python module argument `{args.module}` does not exist"))
     if file_info.isdir or not file_info.isfile:
-        sys.exit(err(f"Python module argument `{args.module}` is not a file"))
+        sys.exit(util.err(f"Python module argument `{args.module}` is not a file"))
     if file_info.extension != ".py":
-        sys.exit(err(f"Python module argument `{args.module}` is not a `.py` file"))
+        sys.exit(util.err(f"Python module argument `{args.module}` is not a `.py` file"))
 
     # compress module to .zip file
     zip_path = os.path.join(BUILD_DIR, file_info.leaf_name + ".zip")
@@ -136,7 +97,7 @@ def main():
         zf.write(file_info.abspath, arcname=file_info.leaf)
 
     # Run subprocess call to AWS cli
-    zip_file_info = get_file_info(zip_path)
+    zip_file_info = util.get_file_info(zip_path)
     logging.debug(f"Zip file info: {zip_file_info}")
     zip_path = "fileb://" + zip_file_info.abspath
     cmd = [

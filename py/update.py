@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
 """
+Idea on expansion:
+    * make cli tool to create:
+        * Dockerfile
+        * script build.sh
+        * script run.sh
+        * script.sh
+
 Limitations:
     * Can only update code to existing functions
     * Cannot create new functions

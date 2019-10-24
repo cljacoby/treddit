@@ -5,6 +5,8 @@ import time
 import os
 import logging
 
+# import lambda_src
+
 BUCKET_NAME = "treddit"
 KEY = "submissions.json"
 TMP_FILE = '/tmp/submissions.json'

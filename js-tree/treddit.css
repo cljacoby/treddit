@@ -1,0 +1,43 @@
+:root {
+  --color-grey: #555;
+  --color-dark-grey: #999;
+}
+
+#tree {
+    border: 1px solid black;
+    max-width: 100%;
+    width: 1000px;
+    height: 1000px;
+    font: 10px sans-serif;
+    margin: 5px;
+}
+
+.treeEdge {
+    stroke: var(--color-grey);
+    stroke-opacity: 0.5;
+    stroke-width: 1.5;
+    fill: none;
+}
+
+g.treeNode {
+
+}
+
+
+.treeNode>circle {
+    fill: var(--color-dark-grey);
+    r: 2.5;
+}
+
+.treeNode>text {
+  stroke-linejoin: round;
+  stroke-width: 3;
+
+}
+
+
+
+
+
+
+

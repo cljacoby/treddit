@@ -1,18 +1,24 @@
 #!/bin/bash
 
-# Run the docker container with `cargo run` as entry.
+# Run an interactive shell in the docker container.
 
 PROJ="get_submissions"
 PROJ_DIR="$HOME/treddit/lambda/get_submissions"
-CONT_NAME="$PROJ_cont"
+CONT_NAME="${PROJ}_cont"
 
-echo "Running $PROJ container ... "
+echo "Running ${PROJ} container ... "
+set -o xtrace
 
+# TODO: I'm running the http server just to keep the container alive
+# in deamon mode. I want to cp the file out to local file system.
 docker run \
   --rm \
-  -it \
+  -d \
   -p 3000:3000 \
   --name ${CONT_NAME} \
-  --entrypoint cargo \
+  --entrypoint python3 \
   ${PROJ} \
-  run
+  -m http.server
+
+docker exec -d ${CONT_NAME} /bin/bash
+uname

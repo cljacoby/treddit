@@ -1,4 +1,4 @@
-const data = {
+{
   "name": "flare",
   "children": [
     {
@@ -1037,4 +1037,4 @@ const data = {
       ]
     }
   ]
-};
+}

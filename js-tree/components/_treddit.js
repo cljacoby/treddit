@@ -105,7 +105,7 @@ svg.call(d3.zoom()
 // *****************************************************
 // *****************************************************
 
-const app = new Vue({
+const Treddit = new Vue({
   el: '#vue-test',
   data: {
     message: 'Hello Vue!'
@@ -113,14 +113,3 @@ const app = new Vue({
 });
 
 
-class Tree {
-
-    constructor() {
-        this.height = 1000;
-        this.width = 1000;
-
-
-    }
-
-
-}
